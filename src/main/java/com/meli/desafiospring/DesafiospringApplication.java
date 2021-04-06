@@ -1,5 +1,6 @@
 package com.meli.desafiospring;
 
+import com.meli.desafiospring.repositories.ProductsRepoImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -7,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DesafiospringApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DesafiospringApplication.class, args);
-    }
+        SpringApplication.run(DesafiospringApplication.class, args);}
 
 }
