@@ -105,28 +105,27 @@ public class ProductController {
                         var element = allParams.get(param);
                         switch (element) {
                             case "0":
-                                var sortedList = new ArrayList<ProductDTO>();
+                                ArrayList<ProductDTO> sortedList;
                                 sortedList = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparing(ProductDTO::getName))
                                         .collect(Collectors.toList());
                                 return new ResponseEntity<>(sortedList,HttpStatus.OK);
                             case "1":
-                                var sortedListDesc = new ArrayList<ProductDTO>();
+                                ArrayList<ProductDTO> sortedListDesc;
                                 sortedListDesc = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparing(ProductDTO::getName)
                                         .reversed())
                                         .collect(Collectors.toList());
                                 return new ResponseEntity<>(sortedListDesc,HttpStatus.OK);
                             case "2":
-                                var sortedByPrice = new ArrayList<ProductDTO>();
+                                ArrayList<ProductDTO> sortedByPrice;
                                 sortedByPrice = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparingDouble(ProductDTO::getPrice))
                                         .collect(Collectors.toList());
                                 return new ResponseEntity<>(sortedByPrice,HttpStatus.OK);
                             case "3":
-                                var sortedByPriceAsc = new ArrayList<ProductDTO>();
+                                ArrayList<ProductDTO> sortedByPriceAsc;
                                 sortedByPriceAsc = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparingDouble(ProductDTO::getPrice)
                                         .reversed())
                                         .collect(Collectors.toList());
                                 return new ResponseEntity<>(sortedByPriceAsc,HttpStatus.OK);
-
                         }
                 }
             }
