@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -103,6 +101,33 @@ public class ProductController {
                             }
                         }
                         break;
+                    case "order":
+                        var element = allParams.get(param);
+                        switch (element) {
+                            case "0":
+                                var sortedList = new ArrayList<ProductDTO>();
+                                sortedList = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparing(ProductDTO::getName))
+                                        .collect(Collectors.toList());
+                                return new ResponseEntity<>(sortedList,HttpStatus.OK);
+                            case "1":
+                                var sortedListDesc = new ArrayList<ProductDTO>();
+                                sortedListDesc = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparing(ProductDTO::getName)
+                                        .reversed())
+                                        .collect(Collectors.toList());
+                                return new ResponseEntity<>(sortedListDesc,HttpStatus.OK);
+                            case "2":
+                                var sortedByPrice = new ArrayList<ProductDTO>();
+                                sortedByPrice = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparingDouble(ProductDTO::getPrice))
+                                        .collect(Collectors.toList());
+                                return new ResponseEntity<>(sortedByPrice,HttpStatus.OK);
+                            case "3":
+                                var sortedByPriceAsc = new ArrayList<ProductDTO>();
+                                sortedByPriceAsc = (ArrayList<ProductDTO>) flag2.stream().sorted(Comparator.comparingDouble(ProductDTO::getPrice)
+                                        .reversed())
+                                        .collect(Collectors.toList());
+                                return new ResponseEntity<>(sortedByPriceAsc,HttpStatus.OK);
+
+                        }
                 }
             }
         }
