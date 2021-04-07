@@ -1,0 +1,35 @@
+private List<ProductoDTO> obtenerProductosDB() {
+        List<ProductoDTO> productList = new ArrayList<ProductoDTO>();
+
+        try {
+            File inputF = new File("src/main/resources/dbProductos.csv");
+            InputStream inputFS = new FileInputStream(inputF);
+            BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
+
+            // skip the header of the csv
+            productList = br.lines().skip(1).map(mapToItem).collect(Collectors.toList());
+            br.close();
+            //TODO
+        } catch (Exception e) {
+
+        }
+        return productList;
+    }
+
+
+private Function<String, ProductoDTO> mapToItem = (line) -> {
+
+        String[] producto = line.split(",");// a CSV has comma separated lines
+
+        ProductoDTO item = new ProductoDTO();
+        item.setProductId(producto[0]);
+        item.setName(producto[1]);
+        item.setCategory(producto[2]);
+        item.setBrand(producto[3]);
+        item.setPrice(Double.parseDouble(producto[4].substring(1).replace(".", "")));
+        item.setQuantity(Integer.parseInt(producto[5]));
+        item.setFreeShipping(producto[6] == "Yes");
+        item.setPrestige(producto[7].toCharArray().length);
+
+        return item;
+    };

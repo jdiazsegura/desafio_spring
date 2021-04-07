@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
 
@@ -21,4 +22,6 @@ public interface ProductService {
     List<ProductDTO> findByFreeShipping(boolean freeShipping);
 
     List<ProductDTO> findByPrestige(double prestige);
+
+    List<ProductDTO> getMethod(Map<String, String> allParams);
 }
