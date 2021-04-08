@@ -1,6 +1,10 @@
 package com.meli.desafiospring.services;
 
+import com.meli.desafiospring.dtos.PayloadDTO;
 import com.meli.desafiospring.dtos.ProductDTO;
+import com.meli.desafiospring.dtos.TicketDTO;
+import com.meli.desafiospring.exceptions.CategoryNotFoundException;
+import com.meli.desafiospring.exceptions.ProductNotFoundException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -9,19 +13,7 @@ import java.util.Map;
 
 public interface ProductService {
 
-    List<ProductDTO> findAll();
+    List<ProductDTO> getMethod(Map<String, String> allParams) throws ProductNotFoundException, CategoryNotFoundException;
 
-    List<ProductDTO> findByCategory(String category);
-
-    List<ProductDTO> findByProductName(String productName);
-
-    List<ProductDTO> findByBrand(String brand);
-
-    List<ProductDTO> findByPrice(double price);
-
-    List<ProductDTO> findByFreeShipping(boolean freeShipping);
-
-    List<ProductDTO> findByPrestige(double prestige);
-
-    List<ProductDTO> getMethod(Map<String, String> allParams);
+    TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException;
 }

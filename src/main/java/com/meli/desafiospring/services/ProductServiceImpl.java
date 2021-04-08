@@ -1,17 +1,16 @@
 package com.meli.desafiospring.services;
 
+import com.meli.desafiospring.dtos.PayloadDTO;
 import com.meli.desafiospring.dtos.ProductDTO;
+import com.meli.desafiospring.dtos.TicketDTO;
+import com.meli.desafiospring.exceptions.CategoryNotFoundException;
+import com.meli.desafiospring.exceptions.ProductNotFoundException;
 import com.meli.desafiospring.repositories.ProductsRepo;
-import com.meli.desafiospring.repositories.ProductsRepoImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -23,46 +22,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<ProductDTO> findAll(){
-        return productsRepo.findAll();
-    }
-
-    @Override
-    public List<ProductDTO> findByCategory(String category){
-        return productsRepo.findByCategory(category);
-    }
-
-    @Override
-    public List<ProductDTO> findByProductName(String productName){
-        return productsRepo.findByProductName(productName);
-    }
-
-    @Override
-    public List<ProductDTO> findByBrand(String brand){
-        return productsRepo.findByBrand(brand);
-    }
-
-    @Override
-    public List<ProductDTO> findByPrice(double price){
-        return productsRepo.findByPrice(price);
-    }
-
-    @Override
-    public List<ProductDTO> findByFreeShipping(boolean freeShipping){
-        return productsRepo.findByFreeShipping(freeShipping);
-    }
-
-    @Override
-    public List<ProductDTO> findByPrestige(double prestige){
-        return productsRepo.findByPrestige(prestige);
-    }
-
-    @Override
-    public List<ProductDTO> getMethod(Map<String, String> allParams){
+    public List<ProductDTO> getMethod(Map<String, String> allParams) throws ProductNotFoundException, CategoryNotFoundException {
         List<ProductDTO> list = new ArrayList<>();
         List<ProductDTO> result = new ArrayList<>();
         if (allParams.isEmpty()) {
-            return findAll();
+            return productsRepo.findAll();
         } else {
             for (var param : allParams.keySet()) {
                 var value = allParams.get(param);
@@ -96,9 +60,28 @@ public class ProductServiceImpl implements ProductService{
                             case "3":
                                 return productsRepo.sortByPriceDesc(result);
                         }
+                        break;
+                    default:
+                        throw new ProductNotFoundException(value);
                 }
             }
         }
         return result;
+    }
+
+    @Override
+    public TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException {
+        var newTicket = new TicketDTO();
+        newTicket.setArticles(payloadDTO.getArticles());
+        newTicket.setTotal(getTotal(productsRepo.normaliceProducts(payloadDTO.getArticles())));
+        return newTicket;
+    }
+
+    public Double getTotal(List<ProductDTO> list){
+        var total = 0.0;
+        for(var element : list){
+            total += (element.getQuantity()*element.getPrice());
+        }
+        return total;
     }
 }
