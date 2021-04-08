@@ -26,6 +26,10 @@ public class ProductsRepoImpl implements ProductsRepo {
         this.database = loadDataBase();
     }
 
+    /**
+     * Metodo encargado de la carga del archivo usado como base de datos
+     * @return Lista de productos definidos en la base de datos
+     */
     private List<ProductDTO> loadDataBase() {
         File file = null;
         try {
@@ -48,6 +52,11 @@ public class ProductsRepoImpl implements ProductsRepo {
     }
 
     //  FIND METHODS
+
+    /**
+     * Metodo que retornara todos los productos en la base de datos
+     * @return Lista de productos
+     */
     @Override
     public List<ProductDTO> findAll(){
         List<ProductDTO> result = new ArrayList<>();
@@ -57,6 +66,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         return result;
     }
 
+    /**
+     * Metodo encargado de la busqueda de Productos en base a su categoria
+     * @param category Categoria a buscar
+     * @return Lista de productos cuya categoria es la solicitada
+     * @throws CategoryNotFoundException En caso de que la categoria no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByCategory(String category) throws  CategoryNotFoundException {
         var result = database.stream()
@@ -70,6 +85,12 @@ public class ProductsRepoImpl implements ProductsRepo {
 
     }
 
+    /**
+     * Metodo encargado de la busqueda de productos en base a su nombre
+     * @param productName Nombre a buscar
+     * @return Lista de productos cuyo nombre sea el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByProductName(String productName) throws ProductNotFoundException {
         var result = database.stream()
@@ -82,6 +103,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         }
     }
 
+    /**
+     * Metodo encargado de la busqueda de productos en base a su marca
+     * @param brand Marca a buscar
+     * @return Lista de productos cuya marca sea la solicitada
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByBrand(String brand) throws ProductNotFoundException {
         var result =  database.stream()
@@ -94,6 +121,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         }
     }
 
+    /**
+     * Metodo encargado de la busqueda de productos en base a su precio
+     * @param price Precio a buscar
+     * @return Lista de productos cuyo precio sea el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByPrice(double price) throws ProductNotFoundException {
         var result = database.stream()
@@ -106,6 +139,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         }
     }
 
+    /**
+     * Metodo encargado de la busqeda de productos en base a si el envio es gratis
+     * @param freeShipping Booleano referenciando a si el envio es gratuito
+     * @return Lista de productos cuyo envio gratuito cumpla con el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByFreeShipping(boolean freeShipping) throws ProductNotFoundException {
         var result = database.stream()
@@ -118,6 +157,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         }
     }
 
+    /**
+     * Metodo encargado de la busqueda de productos en base a su prestigio
+     * @param prestige Valor de prestigio a buscar
+     * @return Lista de productos cuyo presitigio cumpla con el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findByPrestige(double prestige) throws ProductNotFoundException {
         var result = database.stream()
@@ -130,6 +175,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         }
     }
 
+    /**
+     * Metodo encargado de la busqueda de productos en base a su ID
+     * @param id Id a buscar
+     * @return Lista de productos cuyo ID sea el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> findById(int id) throws ProductNotFoundException {
         var result = database.stream()
@@ -143,6 +194,7 @@ public class ProductsRepoImpl implements ProductsRepo {
     }
 
     // MATCH METHODS
+
     private boolean matchWith(String query, String string) {
         return string.toUpperCase().equals(query.toUpperCase());
     }
@@ -161,6 +213,14 @@ public class ProductsRepoImpl implements ProductsRepo {
     }
 
     //FILTER METHODS
+
+    /**
+     * Metodo encargado de filtrar por categoria
+     * @param category Categoria referencia para filtrar
+     * @param list Lista de productos
+     * @return Lista de productos cuya categoria cumple con la solicitada
+     * @throws CategoryNotFoundException En caso de que la categoria no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> filterByCategory(String category, List<ProductDTO> list) throws  CategoryNotFoundException {
         if (list.isEmpty()) {
@@ -171,6 +231,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return list;
     }
 
+    /**
+     * Metodo encargado de filtrar por Envio gratuito
+     * @param freeShipping Valor de referencia para filtrar
+     * @param list Lista de productos
+     * @return Lista de productos cuyo envio gratuito cumple con el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> filterByFreeShipping(Boolean freeShipping, List<ProductDTO> list) throws ProductNotFoundException {
         if (list.isEmpty()) {
@@ -181,6 +248,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return list;
     }
 
+    /**
+     * Metodo encargado de filtrar por marca
+     * @param brand Marca de referencia para filtrar
+     * @param list Lista de productos
+     * @return Lista de productos cuya marca cumpla con la solicitada
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> filterByBrand(String brand, List<ProductDTO> list) throws ProductNotFoundException {
         if (list.isEmpty()) {
@@ -191,6 +265,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return list;
     }
 
+    /**
+     * Metodo encargado de filtar por precio
+     * @param price Precio de referencia para filtrar
+     * @param list Lista de productos
+     * @return Lista de productos cuyo precio cumpla con el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> filterByPrice(Double price, List<ProductDTO> list) throws ProductNotFoundException {
         if (list.isEmpty()) {
@@ -201,6 +282,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return list;
     }
 
+    /**
+     * Metodo encargado de filtrar en base a su prestigio
+     * @param prestige Prestigio de referencia para filtrar
+     * @param list Lista de productos
+     * @return Lista de productos cuya referencia cumpla con el solicitado
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> filterByPrestige(Double prestige, List<ProductDTO> list) throws ProductNotFoundException {
         if (list.isEmpty()) {
@@ -211,6 +299,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return list;
     }
 
+    /**
+     * Metodo encargado de filtrar por nombre
+     * @param name Nombre de referencia para filtrar
+     * @param list Lista de productos
+     * @return En caso de que el producto no exista en la base de datos
+     * @throws ProductNotFoundException
+     */
     @Override
     public List<ProductDTO> filterByName(String name, List<ProductDTO> list) throws ProductNotFoundException {
         if (list.isEmpty()) {
@@ -223,6 +318,12 @@ public class ProductsRepoImpl implements ProductsRepo {
 
 
     //SORT METHODS
+
+    /**
+     * Metodo encargado de ordenar la lista en base a su nombre de manera ascendente
+     * @param list Lista de productos a ordenar
+     * @return Lista de productos ordenada
+     */
     @Override
     public List<ProductDTO> sortAlphAsc(List<ProductDTO> list){
         List<ProductDTO> sortedList;
@@ -231,6 +332,11 @@ public class ProductsRepoImpl implements ProductsRepo {
         return sortedList;
     }
 
+    /**
+     * Metodo encargado de ordenar la lista en base a su nombre de manera descendente
+     * @param list Lista de productos a ordenar
+     * @return Lista de productos ordenada
+     */
     @Override
     public List<ProductDTO> sortAlphDesc(List<ProductDTO> list){
         List<ProductDTO> sortedList;
@@ -240,6 +346,11 @@ public class ProductsRepoImpl implements ProductsRepo {
         return sortedList;
     }
 
+    /**
+     * Metodo encargado de ordenar la lista en base a su precio de manera ascendente
+     * @param list Lista de productos a ordenar
+     * @return Lista de productos ordenada
+     */
     @Override
     public List<ProductDTO> sortByPriceAsc(List<ProductDTO> list){
         List<ProductDTO> sortedByPrice;
@@ -248,6 +359,11 @@ public class ProductsRepoImpl implements ProductsRepo {
         return sortedByPrice;
     }
 
+    /**
+     * Metodo encargado de ordenar la lista en base a su precio de manera descendente
+     * @param list Lista de productos a ordenar
+     * @return Lista de productos ordenada
+     */
     @Override
     public List<ProductDTO> sortByPriceDesc(List<ProductDTO> list){
         List<ProductDTO> sortedByPrice;
@@ -257,6 +373,13 @@ public class ProductsRepoImpl implements ProductsRepo {
         return sortedByPrice;
     }
 
+    /**
+     * Metodo encargado de normalizar productos de tipo PayloadProductDTO a ProductDTO para la implementacion de otros
+     * metodos
+     * @param list lista de productos de tipo PayloadProductDTO
+     * @return lista de productos de tipo ProductDTO
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> normaliceProducts(List<PayloadProductDTO> list) throws ProductNotFoundException {
         List<ProductDTO> result = new ArrayList<>();
@@ -271,6 +394,11 @@ public class ProductsRepoImpl implements ProductsRepo {
         return result;
     }
 
+    /**
+     * Metodo encargado de normalizar productos de tipo ProductDTO a PayloadProductDTO
+     * @param list lista de productos de tipo ProductDTO
+     * @return lista de productos de tipo PayloadProductDTO
+     */
     @Override
     public List<PayloadProductDTO> normalicePayProducts(List<ProductDTO> list){
         List<PayloadProductDTO> result = null;
@@ -280,6 +408,12 @@ public class ProductsRepoImpl implements ProductsRepo {
         return result;
     }
 
+    /**
+     * Metodo encargado de identificar si el stock solicitado es menor a la solicitada
+     * @param product Producto a identificar stock
+     * @return Respuesta de si existe el stock solicitado
+     * @throws QuantityNotEnoughException En caso de que el stock del prodcuto no cumpla con el requerido.
+     */
     @Override
     public Boolean stockAvailable(PayloadProductDTO product) throws QuantityNotEnoughException {
         var element = database.get(product.getProductId()-1);

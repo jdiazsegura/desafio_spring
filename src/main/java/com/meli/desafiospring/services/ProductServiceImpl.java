@@ -22,6 +22,16 @@ public class ProductServiceImpl implements ProductService{
         this.productsRepo = productsRepo;
     }
 
+    /**
+     *  Metodo principal de obtencion de productos desde el repositorio.
+     *  Aca de igual forma se establece el filtro dependiendo del valor de cada una de las opciones de busqueda
+     *  Para al final retornar una lista con los productos requeridos
+     *
+     * @param allParams Mapa con los parametros a filtrar
+     * @return Lista de productos que cumplen con los parametros brindados
+     * @throws ProductNotFoundException En caso de que el producto no exista en la base de datos
+     * @throws CategoryNotFoundException En caso de que la categoria no exista en la base de datos
+     */
     @Override
     public List<ProductDTO> getMethod(Map<String, String> allParams) throws ProductNotFoundException, CategoryNotFoundException {
         List<ProductDTO> list = new ArrayList<>();
@@ -70,6 +80,13 @@ public class ProductServiceImpl implements ProductService{
         return result;
     }
 
+    /**
+     * Metodo para la creacion de un ticket de compra
+     * @param payloadDTO Lista de compra brindada
+     * @return Ticket de compra con los items definidos en la lista
+     * @throws ProductNotFoundException En caso de que el producto no se encuentre
+     * @throws QuantityNotEnoughException En caso de que el stock disponible del producto solicitado sea menor al requerido
+     */
     @Override
     public TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException, QuantityNotEnoughException {
         var newTicket = new TicketDTO();
@@ -83,6 +100,11 @@ public class ProductServiceImpl implements ProductService{
         return newTicket;
     }
 
+    /**
+     * Metodo para la obtencion del total de compra
+     * @param list Lista de productos seleccionados en el ticket de compra
+     * @return Valor de la compra
+     */
     public Double getTotal(List<ProductDTO> list){
         var total = 0.0;
         for(var element : list){
