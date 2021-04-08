@@ -5,6 +5,7 @@ import com.meli.desafiospring.dtos.ProductDTO;
 import com.meli.desafiospring.dtos.TicketDTO;
 import com.meli.desafiospring.exceptions.CategoryNotFoundException;
 import com.meli.desafiospring.exceptions.ProductNotFoundException;
+import com.meli.desafiospring.exceptions.QuantityNotEnoughException;
 import com.meli.desafiospring.repositories.ProductsRepo;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +71,15 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException {
+    public TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException, QuantityNotEnoughException {
         var newTicket = new TicketDTO();
         newTicket.setArticles(payloadDTO.getArticles());
         newTicket.setTotal(getTotal(productsRepo.normaliceProducts(payloadDTO.getArticles())));
+        for(var element: newTicket.getArticles()){
+            if (Boolean.FALSE.equals(productsRepo.stockAvailable(element))){
+                throw new QuantityNotEnoughException(element.getName());
+            }
+        }
         return newTicket;
     }
 

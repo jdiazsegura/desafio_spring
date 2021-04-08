@@ -5,6 +5,7 @@ import com.meli.desafiospring.dtos.ProductDTO;
 import com.meli.desafiospring.dtos.TicketDTO;
 import com.meli.desafiospring.exceptions.CategoryNotFoundException;
 import com.meli.desafiospring.exceptions.ProductNotFoundException;
+import com.meli.desafiospring.exceptions.QuantityNotEnoughException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
@@ -15,5 +16,5 @@ public interface ProductService {
 
     List<ProductDTO> getMethod(Map<String, String> allParams) throws ProductNotFoundException, CategoryNotFoundException;
 
-    TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException;
+    TicketDTO createTicket(PayloadDTO payloadDTO) throws ProductNotFoundException, QuantityNotEnoughException;
 }

@@ -6,6 +6,7 @@ import com.meli.desafiospring.dtos.PayloadProductDTO;
 import com.meli.desafiospring.dtos.ProductDTO;
 import com.meli.desafiospring.exceptions.CategoryNotFoundException;
 import com.meli.desafiospring.exceptions.ProductNotFoundException;
+import com.meli.desafiospring.exceptions.QuantityNotEnoughException;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -263,7 +264,7 @@ public class ProductsRepoImpl implements ProductsRepo {
             var get = findById(element.getProductId());
             for(var elementData: get){
                     var flag = elementData;
-                    flag.setQuantity(element.getQuantity());
+                    flag.setQuantity(elementData.getQuantity());
                     result.add(flag);
                 }
             }
@@ -277,6 +278,16 @@ public class ProductsRepoImpl implements ProductsRepo {
             result.add(new PayloadProductDTO(element.getProductId(),element.getName(), element.getBrand(), element.getQuantity()));
         }
         return result;
+    }
+
+    @Override
+    public Boolean stockAvailable(PayloadProductDTO product) throws QuantityNotEnoughException {
+        var element = database.get(product.getProductId()-1);
+        if (element.getQuantity() >= product.getQuantity()){
+            return true;
+        }else{
+            throw new QuantityNotEnoughException(product.getName());
+        }
     }
 
 }

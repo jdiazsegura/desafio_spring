@@ -4,6 +4,7 @@ import com.meli.desafiospring.dtos.PayloadProductDTO;
 import com.meli.desafiospring.dtos.ProductDTO;
 import com.meli.desafiospring.exceptions.CategoryNotFoundException;
 import com.meli.desafiospring.exceptions.ProductNotFoundException;
+import com.meli.desafiospring.exceptions.QuantityNotEnoughException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,4 +53,6 @@ public interface ProductsRepo {
     List<ProductDTO> normaliceProducts(List<PayloadProductDTO> list) throws ProductNotFoundException;
 
     List<PayloadProductDTO> normalicePayProducts(List<ProductDTO> list);
+
+    Boolean stockAvailable(PayloadProductDTO product) throws QuantityNotEnoughException;
 }

@@ -3,6 +3,7 @@ package com.meli.desafiospring.controllers;
 import com.meli.desafiospring.dtos.*;
 import com.meli.desafiospring.exceptions.CategoryNotFoundException;
 import com.meli.desafiospring.exceptions.ProductNotFoundException;
+import com.meli.desafiospring.exceptions.QuantityNotEnoughException;
 import com.meli.desafiospring.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class ProductController {
     }
 
     @PostMapping("/purchase-request")
-    public ResponseEntity<PayloadResponseDTO> post(@RequestBody PayloadDTO payloadDTO) throws ProductNotFoundException {
+    public ResponseEntity<PayloadResponseDTO> post(@RequestBody PayloadDTO payloadDTO) throws ProductNotFoundException, QuantityNotEnoughException {
         return new ResponseEntity<>(new PayloadResponseDTO(productService.createTicket(payloadDTO),
-                new StatusCodeDTO(200,"Solicitud Completada")),HttpStatus.OK);
+                new StatusCodeDTO(200,"La solicitud de compra se realizo satisfactoriamente")),HttpStatus.OK);
     }
 
     // EXCEPTION HANDLERS
@@ -45,6 +46,14 @@ public class ProductController {
         statusCode.setCode(404);
         statusCode.setMessage("Category " + errorException.getMessage()+" not found");
         return new ResponseEntity<>(statusCode, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(QuantityNotEnoughException.class)
+    public ResponseEntity<StatusCodeDTO> QuantityNotEnoughExpection(QuantityNotEnoughException errorException){
+        StatusCodeDTO statusCode= new StatusCodeDTO();
+        statusCode.setCode(200);
+        statusCode.setMessage("Product: " + errorException.getMessage()+" not stock enough");
+        return new ResponseEntity<>(statusCode, HttpStatus.OK);
     }
 }
 
